@@ -17,7 +17,7 @@ let
     darwin-modules =
       (map mylib.relativeToRoot [
         # common
-        "secrets/darwin.nix"
+        # "secrets/darwin.nix"
         "modules/darwin"
         # host specific
         "hosts/darwin-${name}"
