@@ -6,167 +6,203 @@
 }@inputs:
 let
   inherit (inputs.nixpkgs) lib;
-  mylib = import ../lib { inherit lib; };
+
+  # =====================================================================================
+  # Project-level extensions
+  # =====================================================================================
+
+  mylib  = import ../lib  { inherit lib; };
   myvars = import ../vars { inherit lib; };
 
-  # Add my custom lib, vars, nixpkgs instance, and all the inputs to specialArgs,
-  # so that I can use them in all my nixos/home-manager/darwin modules.
+
+  # =====================================================================================
+  # SpecialArgs generator
+  # Shared across nixos / darwin / home-manager / colmena
+  # =====================================================================================
+
   genSpecialArgs =
     system:
     inputs
     // {
       inherit mylib myvars;
 
-      # use unstable branch for some packages to get the latest updates
+      # Alternative nixpkgs channels (select per-module if needed)
       # pkgs-unstable = import inputs.nixpkgs-unstable {
-      #   inherit system; # refer the `system` parameter form outer scope recursively
-      #   # To use chrome, we need to allow the installation of non-free software
+      #   inherit system;
       #   config.allowUnfree = true;
       # };
+
       pkgs-2505 = import inputs.nixpkgs-2505 {
         inherit system;
-        # To use chrome, we need to allow the installation of non-free software
         config.allowUnfree = true;
       };
+
       pkgs-stable = import inputs.nixpkgs-stable {
         inherit system;
-        # To use chrome, we need to allow the installation of non-free software
         config.allowUnfree = true;
       };
+
       pkgs-patched = import inputs.nixpkgs-patched {
         inherit system;
-        # to use chrome, we need to allow the installation of non-free software
         config.allowUnfree = true;
       };
+
       pkgs-master = import inputs.nixpkgs-master {
         inherit system;
-        # to use chrome, we need to allow the installation of non-free software
         config.allowUnfree = true;
       };
 
+      # Cross-arch helper (build x86_64 on non-x86 hosts)
       pkgs-x64 = import nixpkgs {
         system = "x86_64-linux";
-
-        # To use chrome, we need to allow the installation of non-free software
         config.allowUnfree = true;
       };
     };
 
-  # This is the args for all the haumea modules in this folder.
+
+  # =====================================================================================
+  # Common args for haumea-style module trees
+  # =====================================================================================
+
   args = {
-    inherit
-      inputs
-      lib
-      mylib
-      myvars
-      genSpecialArgs
-      ;
+    inherit inputs lib mylib myvars genSpecialArgs;
   };
 
-  # modules for each supported system
+
+  # =====================================================================================
+  # System trees (per-architecture entry points)
+  # =====================================================================================
+
   nixosSystems = {
-    x86_64-linux = import ./x86_64-linux (args // { system = "x86_64-linux"; });
+    x86_64-linux  = import ./x86_64-linux  (args // { system = "x86_64-linux"; });
     aarch64-linux = import ./aarch64-linux (args // { system = "aarch64-linux"; });
-    # riscv64-linux = import ./riscv64-linux (args // {system = "riscv64-linux";});
+    # riscv64-linux = import ./riscv64-linux (args // { system = "riscv64-linux"; });
   };
+
   darwinSystems = {
     aarch64-darwin = import ./aarch64-darwin (args // { system = "aarch64-darwin"; });
   };
-  allSystems = nixosSystems // darwinSystems;
-  allSystemNames = builtins.attrNames allSystems;
-  nixosSystemValues = builtins.attrValues nixosSystems;
-  darwinSystemValues = builtins.attrValues darwinSystems;
-  allSystemValues = nixosSystemValues ++ darwinSystemValues;
 
-  # Helper function to generate a set of attributes for each system
-  forAllSystems = func: (nixpkgs.lib.genAttrs allSystemNames func);
+  allSystems         = nixosSystems // darwinSystems;
+  allSystemNames     = builtins.attrNames allSystems;
+  nixosSystemValues  = builtins.attrValues nixosSystems;
+  darwinSystemValues = builtins.attrValues darwinSystems;
+  allSystemValues    = nixosSystemValues ++ darwinSystemValues;
+
+
+  # =====================================================================================
+  # Helpers
+  # =====================================================================================
+
+  forAllSystems = func:
+    nixpkgs.lib.genAttrs allSystemNames func;
+
 in
 {
-  # Add attribute sets into outputs, for debugging
+  # =====================================================================================
+  # Debug / introspection
+  # =====================================================================================
+
   debugAttrs = {
-    inherit
-      nixosSystems
-      darwinSystems
-      allSystems
-      allSystemNames
-      ;
+    inherit nixosSystems darwinSystems allSystems allSystemNames;
   };
 
-  # NixOS Hosts
-  nixosConfigurations = lib.attrsets.mergeAttrsList (
-    map (it: it.nixosConfigurations or { }) nixosSystemValues
-  );
 
-  # Colmena - remote deployment via SSH
-  colmena = {
-    meta =
-      (
+  # =====================================================================================
+  # NixOS & Darwin configurations
+  # =====================================================================================
+
+  nixosConfigurations =
+    lib.attrsets.mergeAttrsList
+      (map (it: it.nixosConfigurations or { }) nixosSystemValues);
+
+  darwinConfigurations =
+    lib.attrsets.mergeAttrsList
+      (map (it: it.darwinConfigurations or { }) darwinSystemValues);
+
+
+  # =====================================================================================
+  # Colmena (remote deployment)
+  # =====================================================================================
+
+  colmena =
+    {
+      meta =
         let
           system = "x86_64-linux";
         in
         {
-          # colmena's default nixpkgs & specialArgs
-          nixpkgs = import nixpkgs { inherit system; };
+          nixpkgs     = import nixpkgs { inherit system; };
           specialArgs = genSpecialArgs system;
-        }
-      )
-      // {
-        # per-node nixpkgs & specialArgs
-        nodeNixpkgs = lib.attrsets.mergeAttrsList (
-          map (it: it.colmenaMeta.nodeNixpkgs or { }) nixosSystemValues
-        );
-        nodeSpecialArgs = lib.attrsets.mergeAttrsList (
-          map (it: it.colmenaMeta.nodeSpecialArgs or { }) nixosSystemValues
-        );
-      };
-  }
-  // lib.attrsets.mergeAttrsList (map (it: it.colmena or { }) nixosSystemValues);
+        };
 
-  # macOS Hosts
-  darwinConfigurations = lib.attrsets.mergeAttrsList (
-    map (it: it.darwinConfigurations or { }) darwinSystemValues
-  );
+      nodeNixpkgs =
+        lib.attrsets.mergeAttrsList
+          (map (it: it.colmenaMeta.nodeNixpkgs or { }) nixosSystemValues);
 
-  # Packages
-  packages = forAllSystems (system: allSystems.${system}.packages or { });
+      nodeSpecialArgs =
+        lib.attrsets.mergeAttrsList
+          (map (it: it.colmenaMeta.nodeSpecialArgs or { }) nixosSystemValues);
+    }
+    // lib.attrsets.mergeAttrsList
+         (map (it: it.colmena or { }) nixosSystemValues);
 
-  # Eval Tests for all NixOS & darwin systems.
-  evalTests = lib.lists.all (it: it.evalTests == { }) allSystemValues;
+
+  # =====================================================================================
+  # Packages & evaluation
+  # =====================================================================================
+
+  packages =
+    forAllSystems (system: allSystems.${system}.packages or { });
+
+  evalTests =
+    lib.lists.all (it: it.evalTests == { }) allSystemValues;
+
+
+  # =====================================================================================
+  # Checks (CI / pre-commit)
+  # =====================================================================================
 
   checks = forAllSystems (system: {
-    # eval-tests per system
     eval-tests = allSystems.${system}.evalTests == { };
 
-    pre-commit-check = pre-commit-hooks.lib.${system}.run {
-      src = mylib.relativeToRoot ".";
-      hooks = {
-        nixfmt-rfc-style = {
-          enable = true;
-          settings.width = 100;
-        };
-        # Source code spell checker
-        typos = {
-          enable = true;
-          settings = {
-            write = true; # Automatically fix typos
-            configPath = ".typos.toml"; # relative to the flake root
-            exclude = "rime-data/";
+    pre-commit-check =
+      pre-commit-hooks.lib.${system}.run {
+        src = mylib.relativeToRoot ".";
+        hooks = {
+          nixfmt-rfc-style = {
+            enable = true;
+            settings.width = 100;
           };
-        };
-        prettier = {
-          enable = true;
-          settings = {
-            write = true; # Automatically format files
-            configPath = ".prettierrc.yaml"; # relative to the flake root
+
+          typos = {
+            enable = true;
+            settings = {
+              write = true;
+              configPath = ".typos.toml";
+              exclude = "rime-data/";
+            };
           };
+
+          prettier = {
+            enable = true;
+            settings = {
+              write = true;
+              configPath = ".prettierrc.yaml";
+            };
+          };
+
+          # deadnix.enable = true;
+          # statix.enable  = true;
         };
-        # deadnix.enable = true; # detect unused variable bindings in `*.nix`
-        # statix.enable = true; # lints and suggestions for Nix code(auto suggestions)
       };
-    };
   });
 
-  # Development Shells
+
+  # =====================================================================================
+  # Development environments
+  # =====================================================================================
+
   devShells = forAllSystems (
     system:
     let
@@ -174,26 +210,30 @@ in
     in
     {
       default = pkgs.mkShell {
+        name = "dots";
+
         packages = with pkgs; [
-          # fix https://discourse.nixos.org/t/non-interactive-bash-errors-from-flake-nix-mkshell/33310
           bashInteractive
-          # fix `cc` replaced by clang, which causes nvim-treesitter compilation error
           gcc
-          # Nix-related
+
           nixfmt
           deadnix
           statix
-          # spell checker
+
           typos
-          # code formatter
           nodePackages.prettier
         ];
-        name = "dots";
+
         inherit (self.checks.${system}.pre-commit-check) shellHook;
       };
     }
   );
 
-  # Format the nix code in this flake
-  formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
+
+  # =====================================================================================
+  # Formatter
+  # =====================================================================================
+
+  formatter =
+    forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
 }
