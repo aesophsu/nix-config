@@ -3,18 +3,18 @@
   myvars,
   ...
 }:
+
 let
   homeDir = config.users.users."${myvars.username}".home;
 in
 {
-  # https://github.com/LnL7/nix-darwin/blob/master/modules/programs/gnupg.nix
-  # try `pkill gpg-agent` if you have issues(such as `no pinentry`)
+  # Enable GPG agent with logging configuration
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = false;
   };
 
-  # enable logs for debugging
+  # Set logs for GPG agent debugging
   launchd.user.agents.gnupg-agent.serviceConfig = {
     StandardErrorPath = "${homeDir}/Library/Logs/gnupg-agent.stderr.log";
     StandardOutPath = "${homeDir}/Library/Logs/gnupg-agent.stdout.log";
