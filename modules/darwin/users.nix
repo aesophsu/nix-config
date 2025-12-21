@@ -1,12 +1,12 @@
-{ myvars, ... }:
 {
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  myvars,
+  ...
+}:
+
+{
+  # Define user and set home directory
   users.users."${myvars.username}" = {
     home = "/Users/${myvars.username}";
-
-    # set user's default shell back to zsh
-    #    `chsh -s /bin/zsh`
-    # DO NOT change the system's default shell to nushell! it will break some apps!
-    # It's better to change only kitty/wezterm & other terminal emulator's shell to nushell!
+    programs.zsh.enable = true;  # Set default shell to zsh
   };
 }
