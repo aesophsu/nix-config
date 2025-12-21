@@ -12,7 +12,7 @@ let
   hosts = [
     "fern"
     "frieren"
-    “stella”
+    "stella"
   ];
 
 in
