@@ -3,7 +3,12 @@
   outputs,
 }:
 let
-  hostsNames = builtins.attrNames outputs.darwinConfigurations;
-  expected = lib.genAttrs hostsNames (name: name);
+  # =====================================================================================
+  # Hostname expectations
+  # =====================================================================================
+
+  hostsNames =
+    builtins.attrNames outputs.darwinConfigurations;
+
 in
-expected
+lib.genAttrs hostsNames (name: name)
