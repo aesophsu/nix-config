@@ -1,13 +1,15 @@
 let
   shellAliases = {
-    "zj" = "zellij";
+    "zj" = "zellij";  # Alias for zellij
   };
 in
 {
+  # Enable Zellij terminal multiplexer
   programs.zellij = {
     enable = true;
   };
-  # only works in bash/zsh, not nushell
+
+  # Shell aliases for Bash/Zsh and Nushell
   home.shellAliases = shellAliases;
   programs.nushell.shellAliases = shellAliases;
 }
