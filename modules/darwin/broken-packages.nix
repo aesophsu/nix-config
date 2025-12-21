@@ -1,8 +1,7 @@
 { lib, ... }:
-# ===================================================================
-# Remove packages that are not well supported for the Darwin platform
-# ===================================================================
+
 let
+  # List of packages that are unsupported on macOS (Darwin)
   brokenPackages = [
     "terraform"
     "terraformer"
@@ -21,12 +20,12 @@ let
   ];
 in
 {
+  # Overlay to remove broken packages from the environment
   nixpkgs.overlays = [
     (
       _: super:
       let
-        removeUnwantedPackages =
-          pname: lib.warn "the ${pname} has been removed on the darwin platform" super.emptyDirectory;
+        removeUnwantedPackages = pname: lib.warn "the ${pname} has been removed on the darwin platform" super.emptyDirectory;
       in
       lib.genAttrs brokenPackages removeUnwantedPackages
     )
