@@ -1,4 +1,4 @@
 { pkgs, ... }:
 {
-  programs.helix.enable = true;
+  programs.helix.enable = true;  # Enable the Helix editor
 }
