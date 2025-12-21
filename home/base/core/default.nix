@@ -1,4 +1,4 @@
 { mylib, ... }:
 {
-  imports = mylib.scanPaths ./.;
+  imports = mylib.scanPaths ./.;  # Scans paths to include relevant configurations
 }
