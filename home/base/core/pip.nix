@@ -1,19 +1,8 @@
-_: {
-  # use mirror for pip install
+{
+  # Use a mirror for pip installs to speed up package downloads
   xdg.configFile."pip/pip.conf".text = ''
     [global]
     index-url = https://mirror.nju.edu.cn/pypi/web/simple
     format = columns
   '';
-
-  # xdg.configFile."pip/pip.conf".text = ''
-  #   [global]
-  #   index-url = https://mirror.nju.edu.cn/pypi/web/simple
-  #   format = columns
-  # '';
-
-  # xdg.configFile."pip/pip.conf".text = ''
-  #   [global]
-  #   index-url = https://mirrors.bfsu.edu.cn/pypi/web/simple
-  # '';
 }
