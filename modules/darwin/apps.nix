@@ -32,10 +32,6 @@ in
   environment.systemPackages = with pkgs; [
     neovim
     git
-    nushell
-    gnugrep
-    gnutar
-    utm
   ];
 
   # Set terminfo directories to fix issues with terminfo
