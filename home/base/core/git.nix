@@ -25,9 +25,9 @@
     hosts = {
       "github.com" = {
         "users" = {
-          "ryan4yin" = null;
+          "aesophsu" = null;
         };
-        "user" = "ryan4yin";
+        "user" = "aesophsu";
       };
     };
   };
@@ -53,8 +53,8 @@
       pull.rebase = true;
       log.date = "iso";  # ISO date format for logs
       url = {
-        "ssh://git@github.com/ryan4yin" = {
-          insteadOf = "https://github.com/ryan4yin";
+        "ssh://git@github.com/aesophsu" = {
+          insteadOf = "https://github.com/aesophsu";
         };
       };
     };
