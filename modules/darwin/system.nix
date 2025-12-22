@@ -17,7 +17,7 @@
     defaults = {
       # Dock settings
       dock = {
-        autohide = true;
+        autohide = false;
         show-recents = false;
         mru-spaces = false;
         expose-group-apps = true;
@@ -26,8 +26,9 @@
       # Finder settings
       finder = {
         _FXShowPosixPathInTitle = true;
-        AppleShowAllExtensions = true;
+        AppleShowAllExtensions = false;
         FXEnableExtensionChangeWarning = false;
+        FXDefaultSearchScope = "SCcf";
         QuitMenuItem = true;
         ShowPathbar = true;
         ShowStatusBar = true;
@@ -47,8 +48,10 @@
         AppleInterfaceStyle = "Dark";
         InitialKeyRepeat = 15;
         KeyRepeat = 3;
+        ApplePressAndHoldEnabled = false;
         NSAutomaticCapitalizationEnabled = false;
         NSAutomaticSpellingCorrectionEnabled = false;
+        NSDocumentSaveNewDocumentsToCloud = false;
       };
 
       # Custom user preferences
@@ -57,9 +60,9 @@
           AppleSpacesSwitchOnActivate = true;
         };
         "com.apple.finder" = {
-          AppleShowAllFiles = true;
+          AppleShowAllFiles = false;
           ShowExternalHardDrivesOnDesktop = true;
-          ShowHardDrivesOnDesktop = true;
+          ShowHardDrivesOnDesktop = false;
         };
         "com.apple.screensaver" = {
           askForPassword = 1;
@@ -77,7 +80,7 @@
     # Keyboard settings for remapping keys
     keyboard = {
       enableKeyMapping = true;
-      remapCapsLockToEscape = true;
+      remapCapsLockToEscape = false;
     };
   };
 }
