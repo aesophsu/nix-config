@@ -69,7 +69,6 @@ in
     };
 
     taps = [
-      "hashicorp/tap"
       "nikitabobko/tap"
       "FelixKratz/formulae"
     ];
@@ -78,42 +77,16 @@ in
       "wget"
       "curl"
       "aria2"
-      "wireguard-tools"
-      "m-cli"
-      "proxychains-ng"
       "gnu-sed"
       "gnu-tar"
       "git-trim"
-      "terraform"
-      "terraformer"
     ];
 
     casks = [
-      "squirrel-app"
-      "firefox"
       "google-chrome"
-      "visual-studio-code"
-      "cursor"
       "aerospace"
       "ghostty"
-      "joplin"
-      "tailscale-app"
-      "netbirdio/tap/netbird-ui"
-      "lm-studio"
-      "telegram"
-      "qq"
-      "zoom"
-      "iina"
-      "stats"
-      "jordanbaird-ice"
-      "neteasemusic"
-      "blender@lts"
-      "clash-verge-rev"
-      "mitmproxy"
-      "insomnia"
-      "wireshark-app"
       "miniforge"
-      "macfuse"
     ];
   };
 }
