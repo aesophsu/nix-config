@@ -15,76 +15,76 @@
 
     # Shell & core tools
     nushell
-    fastfetch
+    # fastfetch
     neovim
-    gnumake
-    just
+    # gnumake
+    # just
     git
     git-lfs
 
     # Monitoring
-    procs
-    btop
+    # procs
+    # btop
 
     # Archives
-    zip
-    xz
-    zstd
-    unzipNLS
-    p7zip
+    # zip
+    # xz
+    # zstd
+    # unzipNLS
+    # p7zip
 
     # Text & data processing
-    gnugrep
-    gawk
-    gnutar
-    gnused
-    sad
-    jq
-    yq-go
-    jc
+    # gnugrep
+    # gawk
+    # gnutar
+    # gnused
+    # sad
+    # jq
+    # yq-go
+    # jc
 
     # Search & navigation
-    fzf
-    fd
-    findutils
-    (ripgrep.override { withPCRE2 = true; })
+    # fzf
+    # fd
+    # findutils
+    # (ripgrep.override { withPCRE2 = true; })
 
     # Disk usage
-    duf
-    dust
-    gdu
-    ncdu
+    # duf
+    # dust
+    # gdu
+    # ncdu
 
     # Networking & diagnostics
-    mtr
-    gping
-    dnsutils
-    ldns
-    doggo
-    wget
-    curl
-    curlie
-    httpie
-    aria2
-    socat
-    nmap
-    ipcalc
-    iperf3
-    hyperfine
-    tcpdump
+    # mtr
+    # gping
+    # dnsutils
+    # ldns
+    # doggo
+    # wget
+    # curl
+    # curlie
+    # httpie
+    # aria2
+    # socat
+    # nmap
+    # ipcalc
+    # iperf3
+    # hyperfine
+    # tcpdump
 
     # File transfer
-    rsync
-    croc
+    # rsync
+    # croc
 
     # Security & crypto
-    libargon2
+    # libargon2
     openssl
 
     # Misc
-    file
-    which
-    tree
-    tealdeer
+    # file
+    # which
+    # tree
+    # tealdeer
   ];
 }
