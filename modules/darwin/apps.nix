@@ -74,12 +74,7 @@ in
     ];
 
     brews = [
-      "wget"
-      "curl"
-      "aria2"
-      "gnu-sed"
-      "gnu-tar"
-      "git-trim"
+      # "git-trim"
     ];
 
     casks = [
