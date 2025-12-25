@@ -1,18 +1,10 @@
 let
-  # =====================================================================================
-  # Host identity
-  # =====================================================================================
-
   hostname = "stella";
-
 in
 {
-  # =====================================================================================
-  # System-level naming
-  # =====================================================================================
-
   networking.hostName = hostname;
   networking.computerName = hostname;
+  networking.localHostName = hostname;
 
   system.defaults.smb.NetBIOSName = hostname;
 }
