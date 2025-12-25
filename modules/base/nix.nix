@@ -5,40 +5,25 @@
   ...
 }:
 {
-  # =====================================================================================
-  # Core nix settings
-  # =====================================================================================
-
   nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
 
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-
-    trusted-users = [
-      myvars.username
-    ];
-
-
-    # ===================================================================================
-    # Binary caches
-    # ===================================================================================
+    trusted-users = [ myvars.username ];
 
     substituters = [
+      "https://cache.nixos.org"
       "https://mirrors.ustc.edu.cn/nix-channels/store"
-      # "https://mirror.sjtu.edu.cn/nix-channels/store"
-      # "https://mirrors.sustech.edu.cn/nix-channels/store"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-
       "https://nix-community.cachix.org"
-      # "https://ryan4yin.cachix.org"
     ];
 
     trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
 
     builders-use-substitutes = true;
+
+    extra-platforms = [ "x86_64-darwin" ];
   };
 }
