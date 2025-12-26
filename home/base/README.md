@@ -26,19 +26,6 @@ systems.
     - **foot/**: Foot terminal (Linux)
     - **ghostty/**: Ghostty terminal
 
-### Terminal Interface
-
-- **tui/**: Terminal-based interface configurations
-  - **cloud/**: Cloud development tools (Terraform, etc.)
-  - **container.nix**: Container tools (Docker, Podman)
-  - **dev-tools.nix**: Terminal-based development tools
-  - **editors/**: Terminal editor configurations
-  - **encryption/**: Encryption and security tools
-  - **gpg/**: GPG key management
-  - **password-store/**: Password management with pass
-  - **shell.nix**: Shell environment configurations
-  - **ssh/**: SSH configuration and management
-  - **zellij/**: Terminal workspace management
 
 ### System Management
 
