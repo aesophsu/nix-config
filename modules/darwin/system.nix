@@ -7,7 +7,6 @@
 {
   # Enable TouchID for sudo authentication
   security.pam.services.sudo_local.touchIdAuth = true;
-  programs.rosetta.enable = true; 
 
   # Set system time zone
   time.timeZone = "Asia/Shanghai";
