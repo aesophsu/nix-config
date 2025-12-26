@@ -6,10 +6,10 @@ let
     urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";  # Encode URL
   };
 
-  localBin = "${config.home.homeDirectory}/.local/bin";  # Local bin path
+  localBin = "${config.home.homeDirectory}/.local/bin";  # Local bin path (optional if no other bins are required)
 in
 {
-  # Zsh setup with additional shell aliases and custom PATH
+  # Zsh setup with additional shell aliases
   programs.zsh = {
     enable = true;
     enableCompletion = true;
