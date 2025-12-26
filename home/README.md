@@ -31,11 +31,6 @@ home/
    - Cross-platform applications and settings
    - Shared configurations for editors, shells, and essential tools
 
-2. **linux**: Linux-specific configuration
-   - Desktop environments (Hyprland, Niri)
-   - Linux-specific GUI applications
-   - System integration tools
-
-3. **darwin**: macOS-specific configuration
+2. **darwin**: macOS-specific configuration
    - macOS applications and services
    - Platform-specific integrations (Aerospace, Squirrel, etc.)
