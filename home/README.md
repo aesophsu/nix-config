@@ -19,14 +19,6 @@ home/
 │   │   ├── encryption/ # GPG, password-store, etc.
 │   │   └── ...
 │   └── home.nix       # Main home manager entry point
-├── linux/             # Linux-specific home manager configurations
-│   ├── base/          # Linux base configurations
-│   ├── gui/           # Linux GUI applications
-│   │   ├── hyprland/  # Hyprland window manager
-│   │   ├── niri/      # Niri window manager
-│   │   └── ...
-│   ├── editors/       # Linux-specific editors
-│   └── ...
 └── darwin/            # macOS-specific home manager configurations
     ├── aerospace/     # macOS window manager
     ├── proxy/         # Proxy configurations
