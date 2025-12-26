@@ -10,17 +10,10 @@ systems.
 - **core/**: Essential cross-platform configurations
   - **core.nix**: Minimal home-manager configuration
   - **shells/**: Shell configurations (bash, zsh, fish, nu)
-  - **editors/**: Text editor configurations
-    - **neovim/**: Neovim with custom plugins and settings
-    - **helix/**: Helix editor configuration
-  - **btop.nix**: System monitoring tools
   - **git.nix**: Git configuration and aliases
-  - **npm.nix**: Node.js package management
   - **pip.nix**: Python package management
   - **starship.nix**: Cross-shell prompt configuration
   - **theme.nix**: Color schemes and theming
-  - **yazi.nix**: Terminal file manager configuration
-  - **zellij/**: Terminal multiplexer with custom layouts
 
 ### Desktop Environment
 
