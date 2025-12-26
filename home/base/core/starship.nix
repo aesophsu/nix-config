@@ -1,0 +1,23 @@
+{
+  programs.starship = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+    enableNushellIntegration = true;
+
+    settings = {
+      "$schema" = "https://starship.rs/config-schema.json";
+      character = {
+        success_symbol = "[➜](bold green)";
+        error_symbol = "[➜](bold red)";
+      };
+      aws.disabled = true;  # Disable AWS integration
+      gcloud.disabled = true;  # Disable Google Cloud integration
+      kubernetes = {
+        symbol = "⛵";
+        disabled = false;
+      };
+      os.disabled = false;
+    };
+  };
+}
