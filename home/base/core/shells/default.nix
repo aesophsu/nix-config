@@ -13,7 +13,7 @@ in
     enable = true;
     enableCompletion = true;
     bashrcExtra = ''
-      export PATH="$PATH:${localBin}:${goBin}:${rustBin}:${npmBin}"
+      export PATH="$PATH:${localBin}"
     '';
   };
 
