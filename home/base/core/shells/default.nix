@@ -1,3 +1,4 @@
+{ config, lib, ... }: 
 let
   shellAliases = {
     k = "kubectl";  # Alias for kubectl
