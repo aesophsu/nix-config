@@ -30,7 +30,6 @@ in
 {
   # Install system-wide packages from nixpkgs
   environment.systemPackages = with pkgs; [
-    neovim
     git
   ];
 
@@ -51,7 +50,6 @@ in
   programs.zsh.enable = true;
   environment.shells = [
     pkgs.zsh
-    pkgs.nushell
   ];
 
   # Enable homebrew installation
@@ -74,13 +72,10 @@ in
     ];
 
     brews = [
-      # "git-trim"
     ];
 
     casks = [
       "google-chrome"
-      "aerospace"
-      "ghostty"
       "miniforge"
     ];
   };
