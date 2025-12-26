@@ -1,3 +1,4 @@
+{ lib, ... }:
 let
   fontSize = 15;  # Define terminal font size
 in
