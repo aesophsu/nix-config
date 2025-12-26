@@ -19,13 +19,10 @@ let
   '';
 in
 {
-  # Enable Bash and Zsh with specific environment configurations
-  programs.bash = {
-    enable = true;
-    bashrcExtra = lib.mkAfter (envExtra + initContent);  # Append environment variables and Conda initialization
-  };
+  # Enable Zsh with specific environment configurations
   programs.zsh = {
     enable = true;
-    inherit envExtra initContent;  # Use the same environment variables and Conda initialization for Zsh
+    enableCompletion = true;
+    zshrcExtra = lib.mkAfter (envExtra + initContent);  # Combine environment variables and Conda initialization
   };
 }
