@@ -11,12 +11,11 @@
         success_symbol = "[➜](bold green)";
         error_symbol = "[➜](bold red)";
       };
-      aws.disabled = true;  # Disable AWS integration
-      gcloud.disabled = true;  # Disable Google Cloud integration
-      kubernetes = {
-        symbol = "⛵";
-        disabled = false;
-      };
+      
+      aws.disabled = true;
+      gcloud.disabled = true;
+      kubernetes.disabled = true;
+      
       os.disabled = false;
     };
   };
