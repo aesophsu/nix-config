@@ -1,41 +1,15 @@
 { lib }:
 {
-  # =====================================================================================
-  # User identity
-  # =====================================================================================
+  username = "sue"; 
+  userfullname = "Milan Sue";
+  useremail = "aesophsu@gmail.com";
 
-  username = "sue";                         # System username
-  userfullname = "Milan Sue";               # Full name (used by git, UI, etc.)
-  useremail = "aesophsu@gmail.com";          # Primary email address
+  networking = import ./networking.nix { inherit lib; };
 
-
-  # =====================================================================================
-  # Networking-related variables
-  # =====================================================================================
-
-  networking = import ./networking.nix {
-    inherit lib;
-  };
-
-
-  # =====================================================================================
-  # Authentication (local account)
-  # =====================================================================================
-
-  initialHashedPassword = "";                # Optional pre-generated password hash
-
-
-  # =====================================================================================
-  # SSH authentication keys
-  # =====================================================================================
-
+  # 对于只在本地工作的用户，这些可以保持默认或留空
+  initialHashedPassword = ""; 
   mainSshAuthorizedKeys = [
-    # Primary SSH keys for daily access
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBmbENfEKkOW0i8nSSL6oSeIJrQMrIexaKKu1SXyMpMs sue@latepro"
   ];
-
-  secondaryAuthorizedKeys = [
-    # Backup SSH keys for recovery
-    # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."
-  ];
+  secondaryAuthorizedKeys = [];
 }
