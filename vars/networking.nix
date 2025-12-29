@@ -1,87 +1,37 @@
 { lib }:
 rec {
-  # =====================================================================================
-  # Network metadata (reference only)
-  # Used as declarative facts for DNS / proxy / future static configs
-  # =====================================================================================
-
-  mainGateway  = "10.0.0.1";
-  proxyGateway = "10.0.0.2";   # Optional proxy gateway (kept for future use)
-
+  # 保持 DNS 设置，这对数据分析时下载依赖包的解析速度有帮助
   nameservers = [
-    "119.29.29.29"             # DNSPod
-    "223.5.5.5"                # AliDNS
+    "119.29.29.29" # DNSPod
+    "223.5.5.5"    # AliDNS
   ];
 
-  prefixLength = 27;
-
-
-  # =====================================================================================
-  # Host address ledger (metadata only)
-  # No static IP is enforced at system level
-  # =====================================================================================
-
+  # 简化 hostsAddr，仅保留当前机器 stella
   hostsAddr = {
     stella = {
-      iface = "en0";           # Wi-Fi on macOS
-      ipv4  = "10.0.0.3";
-    };
-
-    shakky = {
-      iface = "en0";
-      ipv4  = "10.0.0.4";
+      iface = "en0"; 
+      ipv4  = "10.0.0.3"; # 仅作记录，实际仍走 DHCP
     };
   };
 
-
-  # =====================================================================================
-  # Interface policy abstraction
-  # Ensures mobile-safe networking (DHCP-first, no hardcoded IPs)
-  # =====================================================================================
-
-  hostsInterface =
-    lib.attrsets.mapAttrs (_: val: {
-      interfaces."${val.iface}" = {
-        useDHCP = true;        # Always prefer DHCP for portability
-        ipv4.addresses = [];   # Explicitly clear static IPv4 assignments
-      };
-    })
-    hostsAddr;
-
-
-  # =====================================================================================
-  # SSH-related metadata (generated hints / trust anchors)
-  # =====================================================================================
+  # 保持 DHCP 策略，确保你在任何 Wi-Fi 下都能正常上网
+  hostsInterface = lib.attrsets.mapAttrs (_: val: {
+    interfaces."${val.iface}" = {
+      useDHCP = true;
+      ipv4.addresses = []; 
+    };
+  }) hostsAddr;
 
   ssh = {
+    # 删除了繁琐的 extraConfig 生成逻辑
+    extraConfig = "";
 
-    # SSH config snippets (commented templates)
-    extraConfig =
-      lib.attrsets.foldlAttrs
-        (acc: host: val:
-          acc + ''
-            # Host ${host}
-            #   HostName ${val.ipv4}
-            #   Port 22
-          ''
-        )
-        ""
-        hostsAddr;
-
-
-    # Known hosts definition
-    knownHosts =
-      lib.attrsets.mapAttrs
-        (host: value: {
-          hostNames =
-            [ host ]
-            ++ (lib.optional (hostsAddr ? "${host}") hostsAddr."${host}".ipv4);
-
-          publicKey = value.publicKey;
-        })
-        {
-          "github.com".publicKey =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
-        };
+    # 保留 GitHub 信任，防止 Git 报错
+    knownHosts = {
+      "github.com" = {
+        hostNames = [ "github.com" "140.82.113.3" ];
+        publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+      };
+    };
   };
 }
